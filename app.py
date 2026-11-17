@@ -6,7 +6,6 @@ from mesa.visualization.components import AgentPortrayalStyle, PropertyLayerStyl
 from matplotlib.colors import ListedColormap
 
 def propertylayer_portrayal(layer):
-
     if layer.name == "suciedad":
         return PropertyLayerStyle(
             colormap=ListedColormap(["white", "tab:brown"]),
@@ -18,7 +17,7 @@ def propertylayer_portrayal(layer):
 
 def agent_portrayal(agent):
     return AgentPortrayalStyle(
-        size=40,  # Reducido ligeramente para grids grandes como 50x50
+        size=40,
         color="tab:blue"
     )
 
@@ -33,7 +32,7 @@ model_params = {
     },
     "width": {
         "type": "SliderInt",
-        "value": 50,  # Valor por defecto inicial acorde a tus pruebas
+        "value": 50,
         "label": "Width",
         "min": 5,
         "max": 60,
@@ -41,11 +40,19 @@ model_params = {
     },
     "height": {
         "type": "SliderInt",
-        "value": 50,  # Valor por defecto inicial
+        "value": 50,
         "label": "Height",
         "min": 5,
         "max": 60,
         "step": 1,
+    },
+    "porcentaje_sucias": {
+        "type": "SliderFloat",
+        "value": 0.3,
+        "label": "Porcentaje de suciedad inicial:",
+        "min": 0.0,
+        "max": 1.0,
+        "step": 0.05,
     },
     "tiempo_max": {
         "type": "SliderInt",
@@ -61,6 +68,7 @@ aspiradoras_model = AspiradoraModel(
     n=5,
     width=50,
     height=50,
+    porcentaje_sucias=0.5,
     tiempo_max=100
 )
 

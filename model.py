@@ -8,12 +8,13 @@ def calcular_celdas_sucias(model):
 
 class AspiradoraModel(mesa.Model):
 
-    def __init__(self, *, n=5, width=10, height=10, tiempo_max=100, rng=None):
+    def __init__(self, *, n=5, width=10, height=10, porcentaje_sucias=0.5, tiempo_max=100, rng=None):
         super().__init__(rng=rng)
 
         self.num_agentes = n
         self.tiempo_max = tiempo_max
         self.tiempo_actual = 0
+
         self.grid = OrthogonalMooreGrid(
             (width, height),
             random=self.random
@@ -27,7 +28,7 @@ class AspiradoraModel(mesa.Model):
         )
 
         for cell in self.grid.all_cells:
-            if self.random.random() < 0.5:
+            if self.random.random() < porcentaje_sucias:
                 self.capa_suciedad.data[cell.coordinate] = 1
 
         self.grid.add_property_layer(self.capa_suciedad)
@@ -42,7 +43,8 @@ class AspiradoraModel(mesa.Model):
 
         self.datacollector = mesa.DataCollector(
             model_reporters={
-                "CeldasSucias": calcular_celdas_sucias
+                "CeldasSucias": calcular_celdas_sucias,
+                "Tiempo": lambda m: m.tiempo_actual
             },
             agent_reporters={
                 "CeldasLimpias": "celdasLimpias",
@@ -54,12 +56,12 @@ class AspiradoraModel(mesa.Model):
         self.running = True
 
     def step(self):
-
         if not self.running:
             return
 
         self.agents.shuffle_do("step")
         self.tiempo_actual += 1
+
         self.datacollector.collect(self)
 
         if self.tiempo_actual >= self.tiempo_max or calcular_celdas_sucias(self) == 0:
