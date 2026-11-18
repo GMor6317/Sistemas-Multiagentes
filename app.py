@@ -6,6 +6,7 @@ from mesa.visualization.components import AgentPortrayalStyle, PropertyLayerStyl
 from matplotlib.colors import ListedColormap
 
 def propertylayer_portrayal(layer):
+    """Función que define como se pintará la cuadrícula y sus celdas sucias."""
     if layer.name == "suciedad":
         return PropertyLayerStyle(
             colormap=ListedColormap(["white", "tab:brown"]),
@@ -15,19 +16,21 @@ def propertylayer_portrayal(layer):
             vmax=1
         )
 
-def agent_portrayal(agent):
+def agent_portrayal():
+    """Función que define como se visualizará el agente dentro de la simulación."""
     return AgentPortrayalStyle(
         size=40,
         color="tab:blue"
     )
 
+# Aquí se definen los parámetros del modelo. Ayuda a configurar la simulación desde la interfaz de solara.
 model_params = {
     "n": {
         "type": "SliderInt",
         "value": 5,
         "label": "Número de aspiradoras:",
         "min": 1,
-        "max": 20,
+        "max": 100,
         "step": 1,
     },
     "width": {
@@ -64,6 +67,7 @@ model_params = {
     }
 }
 
+# Creando la instancia inicial del modelo.
 aspiradoras_model = AspiradoraModel(
     n=5,
     width=50,
@@ -71,7 +75,6 @@ aspiradoras_model = AspiradoraModel(
     porcentaje_sucias=0.5,
     tiempo_max=100
 )
-
 renderer = (
     SpaceRenderer(
         model=aspiradoras_model,
@@ -82,8 +85,10 @@ renderer = (
     .render()
 )
 
+# Creando la gráfica que muestra la cantidad de celdas sucias
 CeldasSuciasPlot = make_plot_component("CeldasSucias")
 
+# Configuración de la página
 page = SolaraViz(
     aspiradoras_model,
     renderer,
