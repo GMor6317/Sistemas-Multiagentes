@@ -1,4 +1,12 @@
-
+#----------------------------------------------------------
+# Implementación de la estructura del modelo utilizado para 
+# la simulación de aspiradoras.
+#
+# Fecha: 18-Nov-2026
+# Autores:
+#           A01753547 Cassandra Padilla
+#           A01803172 Giancarlo Moreno
+#----------------------------------------------------------
 from model import AspiradoraModel
 
 from mesa.visualization import SolaraViz, SpaceRenderer, make_plot_component
@@ -6,7 +14,11 @@ from mesa.visualization.components import AgentPortrayalStyle, PropertyLayerStyl
 from matplotlib.colors import ListedColormap
 
 def propertylayer_portrayal(layer):
-    """Función que define como se pintará la cuadrícula y sus celdas sucias."""
+    """Función que define como se pintará la cuadrícula y sus celdas sucias.
+    
+    Args:
+        layer: la capa de la cuadrícula que se quiere modificar.
+    """
     if layer.name == "suciedad":
         return PropertyLayerStyle(
             colormap=ListedColormap(["white", "tab:brown"]),
@@ -16,8 +28,12 @@ def propertylayer_portrayal(layer):
             vmax=1
         )
 
-def agent_portrayal():
-    """Función que define como se visualizará el agente dentro de la simulación."""
+def agent_portrayal(agent):
+    """Función que define como se visualizará el agente dentro de la simulación.
+    
+    Args:
+        agent: Un agente de aspiradora.
+    """
     return AgentPortrayalStyle(
         size=40,
         color="tab:blue"
@@ -87,12 +103,14 @@ renderer = (
 
 # Creando la gráfica que muestra la cantidad de celdas sucias
 CeldasSuciasPlot = make_plot_component("CeldasSucias")
+PorcentajeSuciasPlot = make_plot_component("PorcentajeCeldasSucias")
 
 # Configuración de la página
 page = SolaraViz(
     aspiradoras_model,
     renderer,
-    components=[CeldasSuciasPlot],
+    components=[CeldasSuciasPlot,
+                PorcentajeSuciasPlot],
     model_params=model_params,
     name="Simulación de Aspiradoras"
 )

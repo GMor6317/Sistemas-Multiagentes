@@ -1,8 +1,24 @@
+#----------------------------------------------------------
+# Implementación de la estructura del modelo utilizado para 
+# la simulación de aspiradoras.
+#
+# Fecha: 18-Nov-2026
+# Autores:
+#           A01753547 Cassandra Padilla
+#           A01803172 Giancarlo Moreno
+#----------------------------------------------------------
 from mesa.discrete_space import CellAgent
 
 class AspiradoraAgent(CellAgent):
-
+    """Un agente con una celda asignada, número de movimientos y la cantidad de celdas que ha limpiado."""
+    
     def __init__(self, model, cell):
+        """Inicializar una instancia AspiradoraAgent
+        
+        Args:
+            model: Una instancia modelo
+            cell: Una celda de la cuadrícula    
+        """
         super().__init__(model)
         self.cell = cell
         self.celdasLimpias = 0
@@ -22,5 +38,6 @@ class AspiradoraAgent(CellAgent):
             self.celdasLimpias += 1
 
     def step(self):
+        """Definición de lo que se ejecutará en cada paso de la simulación."""
         self.mover()
         self.limpiar()
