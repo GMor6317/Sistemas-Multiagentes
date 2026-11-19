@@ -102,3 +102,4 @@ class AspiradoraModel(mesa.Model):
 
         if self.tiempo_actual >= self.tiempo_max or calcular_celdas_sucias(self) == 0:
             self.running = False
+            print(f"Porcentaje de celdas sucias: {calcular_porcentaje_celdas_sucias(self)}")
